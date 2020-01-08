@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from './components/layout/Navbar';
-import UserItem from './components/users/UserItem';
+import Users from './components/users/Users';
 
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -10,7 +10,9 @@ class App extends Component {
     return (
       <div className="app">
         <Navbar></Navbar>
-        <UserItem></UserItem>
+        <div className="container">
+          <Users></Users>
+        </div>
       </div>
     );
   }
