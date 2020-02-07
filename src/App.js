@@ -2,7 +2,6 @@ import React, { useState, Fragment } from 'react';
 import Navbar from './components/layout/Navbar';
 import Users from './components/users/Users';
 import Search from './components/users/Search';
-import axios from 'axios';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -12,8 +11,6 @@ import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const App = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
 
   // Set Alert
