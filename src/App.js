@@ -5,8 +5,9 @@ import Search from './components/users/Search';
 import axios from 'axios';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About';
-
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import GithubState from './context/github/GithubState';
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -39,32 +40,34 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <div className="app">
-        <Navbar></Navbar>
-        <div className="container">
-          <Alert alert={alert}></Alert>
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={props => (
-                <Fragment>
-                  <Search
-                    searchUsers={searchUsers}
-                    clearUsers={clearUsers}
-                    showClear={users.length > 0 ? true : false}
-                    setAlert={showAlert}
-                  ></Search>
-                  <Users loading={loading} users={users}></Users>
-                </Fragment>
-              )}
-            ></Route>
-            <Route exact path="/about" component={About}></Route>
-          </Switch>
+    <GithubState>
+      <Router>
+        <div className="app">
+          <Navbar></Navbar>
+          <div className="container">
+            <Alert alert={alert}></Alert>
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={props => (
+                  <Fragment>
+                    <Search
+                      searchUsers={searchUsers}
+                      clearUsers={clearUsers}
+                      showClear={users.length > 0 ? true : false}
+                      setAlert={showAlert}
+                    ></Search>
+                    <Users loading={loading} users={users}></Users>
+                  </Fragment>
+                )}
+              ></Route>
+              <Route exact path="/about" component={About}></Route>
+            </Switch>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </GithubState>
   );
 };
 
