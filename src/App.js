@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import Navbar from './components/layout/Navbar';
 import Users from './components/users/Users';
 import Search from './components/users/Search';
@@ -10,63 +10,62 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-class App extends Component {
-  state = {
-    users: [],
-    loading: false,
-    alert: null
-  };
+const App = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState(null);
 
   // Search github users
-  searchUsers = async text => {
-    this.setState({ loading: true });
+  const searchUsers = async text => {
+    setLoading(true);
     const res = await axios.get(
       `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
     );
 
-    this.setState({ users: res.data.items, loading: false });
+    setUsers(res.data.items);
+    setLoading(false);
   };
 
   // clear users from state
-  clearUsers = () => this.setState({ users: [], looading: false });
-
-  // Set Alert
-  setAlert = (msg, type) => {
-    this.setState({ alert: { msg, type } });
-    setTimeout(() => this.setState({ alert: null }), 5000);
+  const clearUsers = () => {
+    setUsers([]);
+    setLoading(false);
   };
 
-  render() {
-    const { user, users, loading } = this.state;
-    return (
-      <Router>
-        <div className="app">
-          <Navbar></Navbar>
-          <div className="container">
-            <Alert alert={this.state.alert}></Alert>
-            <Switch>
-              <Route
-                exact
-                path="/"
-                render={props => (
-                  <Fragment>
-                    <Search
-                      searchUsers={this.searchUsers}
-                      clearUsers={this.clearUsers}
-                      showClear={users.length > 0 ? true : false}
-                      setAlert={this.setAlert}
-                    ></Search>
-                    <Users loading={loading} users={users}></Users>
-                  </Fragment>
-                )}
-              ></Route>
-              <Route exact path="/about" component={About}></Route>
-            </Switch>
-          </div>
+  // Set Alert
+  const showAlert = (msg, type) => {
+    setAlert({ msg, type });
+    setTimeout(() => setAlert(null), 5000);
+  };
+
+  return (
+    <Router>
+      <div className="app">
+        <Navbar></Navbar>
+        <div className="container">
+          <Alert alert={alert}></Alert>
+          <Switch>
+            <Route
+              exact
+              path="/"
+              render={props => (
+                <Fragment>
+                  <Search
+                    searchUsers={searchUsers}
+                    clearUsers={clearUsers}
+                    showClear={users.length > 0 ? true : false}
+                    setAlert={showAlert}
+                  ></Search>
+                  <Users loading={loading} users={users}></Users>
+                </Fragment>
+              )}
+            ></Route>
+            <Route exact path="/about" component={About}></Route>
+          </Switch>
         </div>
-      </Router>
-    );
-  }
-}
+      </div>
+    </Router>
+  );
+};
 
 export default App;
