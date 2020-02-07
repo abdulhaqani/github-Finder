@@ -1,8 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Navbar from './components/layout/Navbar';
 import Alert from './components/layout/Alert';
 import About from './components/pages/About';
 import Home from './components/pages/Home';
+import NotFound from './components/pages/NotFound';
+
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import GithubState from './context/github/GithubState';
@@ -17,12 +19,13 @@ const App = () => {
       <AlertState>
         <Router>
           <div className="app">
-            <Navbar></Navbar>
+            <Navbar />
             <div className="container">
-              <Alert></Alert>
+              <Alert />
               <Switch>
-                <Route exact path="/" component={Home}></Route>
-                <Route exact path="/about" component={About}></Route>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/about" component={About} />
+                <Route component={NotFound} />
               </Switch>
             </div>
           </div>
